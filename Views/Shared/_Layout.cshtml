@@ -39,8 +39,20 @@
     </nav>
 
     <div class="alert alert-success justify-content-between text-center" role="alert">
-        CLIQUE AQUI AGORA E OBTENHA UM CUPOM <a href="#" class="alert-link">CUPOM DE DESCONTO</a> EXCLUSIVO!
+        CLIQUE AQUI AGORA E OBTENHA UM CUPOM <a href="#" class="alert-link" data-toggle="modal" data-target="#modalDesconto">CUPOM DE DESCONTO</a> EXCLUSIVO!
     </div>
+      
+    <!-- Modal Desconto-->
+    <div class="modal fade" id="modalDesconto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center"> 
+                    <img src="./imgs/dezconto_qrcode.png" class="img-fluid" alt="Imagem do QR Code" />
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!------------------------------------------------------------------------------------------------------------------------------------------------>
     @RenderBody()
@@ -94,6 +106,7 @@
         </div>
     </footer>
 
+    
 
     <!-- Principal JavaScript do Bootstrap
     ================================================== -->
