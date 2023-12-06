@@ -54,7 +54,7 @@
 
             </ul>
 
-            <form class="form-inline my-2 my-md-0" form method="post" asp-controller="CheckOut" asp-action="ApplyPromotionalCode"
+            <form class="form-inline my-2 my-md-0" method="post" asp-controller="CheckOut" asp-action="ApplyPromotionalCode"
                   class="card p-2">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Código promocional" name="code">
@@ -67,18 +67,18 @@
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Endereço de cobrança</h4>
 
-            <form class="needs-validation" form method="post" asp-controller="CheckOut" asp-action="FinishCheckOut">
+            <form method="post" asp-controller="CheckOut" asp-action="FinishCheckOut">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="primeiroNome">Nome</label>
-                        <input name="name" type="text" class="form-control" id="primeiroNome" placeholder="" value="" required="required">
+                        <input name="name" type="text" class="form-control" id="primeiroNome" placeholder="" required="required">
                         <div class="invalid-feedback">
                             É obrigatório inserir um nome válido.
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="sobrenome">Sobrenome</label>
-                        <input name="family_name" type="text" class="form-control" id="sobrenome" placeholder="" value="" required="required">
+                        <input name="family_name" type="text" class="form-control" id="sobrenome" placeholder="" required="required">
                         <div class="invalid-feedback">
                             É obrigatório inserir um sobre nome válido.
                         </div>
@@ -95,7 +95,7 @@
 
                 <div class="mb-3">
                     <label for="email">CPF </label>
-                    <input name="cpf" type="number" class="form-control" id="email" required="required">
+                    <input name="cpf" type="text" class="form-control" id="email" required="required">
                     <div class="invalid-feedback">
                         Por favor, insira um endereço de CPF válido, para atualizações de entrega.
                     </div>
@@ -103,7 +103,7 @@
 
                 <div class="mb-3">
                     <label for="endereco">Endereço</label>
-                    <input name="address" type="text" class="form-control" id="endereco" placeholder="Rua dos bobos, nº 0" required="required">
+                    <input name="address" type="text" class="form-control" id="endereco" required="required">
                     <div class="invalid-feedback">
                         Por favor, insira seu endereço de entrega.
                     </div>
@@ -158,15 +158,15 @@
 
                 <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input name="type_payment" id="credito" name="paymentMethod" type="radio" class="custom-control-input" checked required="required">
+                        <input name="type_payment_credit" id="credito" name="paymentMethod" type="radio" class="custom-control-input" checked>
                         <label class="custom-control-label" for="credito">Cartão de crédito</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input name="type_payment" id="debito" name="paymentMethod" type="radio" class="custom-control-input" required="required">
+                        <input name="type_payment_debit" id="debito" name="paymentMethod" type="radio" class="custom-control-input">
                         <label class="custom-control-label" for="debito">Cartão de débito</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input name="type_payment" id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="required">
+                        <input name="type_payment_paypal" id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
                         <label class="custom-control-label" for="paypal">PayPal</label>
                     </div>
                 </div>
@@ -204,7 +204,6 @@
                     </div>
                 </div>
 
-                <input name="code" value="N" />
 
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Continue o checkout</button>

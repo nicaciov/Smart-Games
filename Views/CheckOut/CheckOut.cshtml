@@ -30,22 +30,7 @@
                                 <span class="text-muted">R$ @item.Subtotal.ToString("0.00")</span>
                             </li>
                         }               }          }
-
-
-                @if (ViewBag.desconto != null)
-                {
-                    <li class="list-group-item d-flex justify-content-between bg-light">
-                        <div class="text-success">
-                            <h6 class="my-0">Código de promoção</h6>
-                            <small>DEZCONTO</small>
-                        </div>
-                        <span class="text-success">-R @ViewBag.desconto.ToString("0.00")</span>
-                    </li>
-                }
-                else
-                {
-                    <li class="list-group-item d-flex justify-content-between bg-light text-danger"><strong>CÓDIGO INVÁLIDO</strong></li>
-                }
+                         
 
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (BRL)</span>
@@ -54,7 +39,7 @@
 
             </ul>
 
-            <form class="form-inline my-2 my-md-0" form method="post" asp-controller="CheckOut" asp-action="ApplyPromotionalCode"
+            <form class="form-inline my-2 my-md-0" method="post" asp-controller="CheckOut" asp-action="ApplyPromotionalCode"
                   class="card p-2">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Código promocional" name="code">
@@ -95,7 +80,7 @@
 
                 <div class="mb-3">
                     <label for="email">CPF </label>
-                    <input name="cpf" type="text" class="form-control" id="email" required="required"  ">
+                    <input name="cpf" type="text" class="form-control" id="email" required="required">
                     <div class="invalid-feedback">
                         Por favor, insira um endereço de CPF válido, para atualizações de entrega.
                     </div>
@@ -158,15 +143,15 @@
 
                 <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input name="type_payment_credit" id="credito" name="paymentMethod" type="radio" class="custom-control-input" checked  >
+                        <input name="type_payment_credit" id="credito"   type="radio" class="custom-control-input" checked  >
                         <label class="custom-control-label" for="credito">Cartão de crédito</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input name="type_payment_debit" id="debito" name="paymentMethod" type="radio" class="custom-control-input"  >
+                        <input name="type_payment_debit" id="debito"  type="radio" class="custom-control-input"  >
                         <label class="custom-control-label" for="debito">Cartão de débito</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input name="type_payment_paypal" id="paypal" name="paymentMethod" type="radio" class="custom-control-input"  >
+                        <input name="type_payment_paypal" id="paypal" type="radio" class="custom-control-input"  >
                         <label class="custom-control-label" for="paypal">PayPal</label>
                     </div>
                 </div>
@@ -207,7 +192,9 @@
 
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Continue o checkout</button>
-            </form>
+            
+                </form>
+
         </div>
     </div>
 </div>
