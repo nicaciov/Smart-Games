@@ -24,5 +24,13 @@ namespace Smart_Games.Controllers.Home
             return View();
         }
 
+        public IActionResult SearchGameName(string game_name)
+        {
+            ViewBag.listAllGames = DAO.DAO.searchGameName(_configuration, game_name);
+            ViewBag.searchGame_Name = game_name;
+
+            return View();
+        }
+
     }
 }

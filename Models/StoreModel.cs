@@ -3,10 +3,13 @@
     public class StoreModel
     {
 
-        private long id { get; set; }
-        private string store { get; set; }
-        private DateTime inclusion_date { get; set; }
-        private DateTime edit_date { get; set; }
+        public long id { get; set; }
+        public long game_id { get; set; }
+        public string store { get; set; }
+        public string lat { get; set; }
+        public string lon { get; set; }
+        public DateTime inclusion_date { get; set; }
+        public DateTime edit_date { get; set; }
 
     }
 }

@@ -3,10 +3,11 @@
     public class PlatformModel
     {
 
-        private long id { get; set; }
-        private string platform { get; set; }
-        private DateTime inclusion_date { get; set; }
-        private DateTime edit_date { get; set; }
+        public long id { get; set; }
+        public long game_id { get; set; }
+        public string platform { get; set; }
+        public DateTime inclusion_date { get; set; }
+        public DateTime edit_date { get; set; }
 
     }
 }

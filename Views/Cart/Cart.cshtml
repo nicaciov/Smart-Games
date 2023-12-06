@@ -8,40 +8,116 @@
         </div>
 
         <div class="col-8">
-            <div class="table-responsive-lg">
-                <table class="table table-borderless">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Primeiro</th>
-                            <th scope="col">Último</th>
-                            <th scope="col">Nickname</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
+            @if (ViewBag.GroupedCartItems != null)
+            {
+                @if (ViewBag.GroupedCartItems.Count != 0)
+                {
+                    <div class="table-responsive-lg">
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead">
+                                <tr>
+                                    <th scope="col">Nome do Jogo</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.GroupedCartItems)
+                                {
+                                    <tr>
+                                        <td>@item.GameName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>
+                                            <a class="btn btn-outline-success" asp-controller="Cart" asp-action="AddCart" asp-route-id="@item.GameId">Adicionar</a>
+                                            <a class="btn btn-outline-danger" asp-controller="Cart" asp-action="RemoveCart" asp-route-id="@item.GameId">Remover</a>
+                                        </td>
+                                        <td>R$ @item.Subtotal.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-secondary">
+                                    <td colspan="1" class="text-center"><strong> </strong></td>
+                                    <td colspan="1" class="text-center"><strong>@ViewBag.GroupedCartItems.Count</strong></td>
+                                    <td colspan="1" class="text-center"><strong>Total Geral</strong></td>
+                                    <td colspan="1" class="text-right">R$ @ViewBag.Total.ToString("0.00")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                } 
+            } 
         </div>
 
         <div class="col-2">
         </div>
     </div>
+
+    @if (ViewBag.GroupedCartItems != null)
+    {
+        @if (ViewBag.GroupedCartItems.Count != 0)
+        {
+            <div class="row">
+                <div class="col-2">
+                </div>
+
+                <div class="col-8 text-right">
+                    <a class="btn btn-outline-white" style="border-color: red; color:red;" asp-controller="Cart" asp-action="ClearCart">Limpar carrinho</a>
+                    <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a;" asp-controller="CheckOut" asp-action="CheckOut">Continuar compra</a>
+                </div>
+
+                <div class="col-2">
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+                <h6>Não existem dados a serem exibidos</h6>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+            <h6>Não existem dados a serem exibidos</h6>
+        </div>
+    }
+
 </div>
+
+<style>
+    table {
+        margin-top: 20px;
+    }
+
+    .table th,
+    .table td {
+        text-align: center;
+    }
+
+    .table th {
+        vertical-align: middle;
+    }
+
+    .btn-group {
+        display: flex;
+    }
+
+    .btn {
+        flex-grow: 1;
+    }
+</style>
+
+<script>
+    function adicionarItem(gameId) {
+        // Lógica para adicionar item ao carrinho com o ID do jogo
+    }
+
+    function removerItem(gameId) {
+        // Lógica para remover item do carrinho com o ID do jogo
+    }
+</script>

@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS games_table;
 CREATE TABLE games_table (
   id INT AUTO_INCREMENT PRIMARY KEY,
   game_name VARCHAR(255) NOT NULL,
-  game_description VARCHAR(100),
+  game_description VARCHAR(1000),
   game_price DOUBLE NOT NULL,
   inclusion_date DATETIME,
   edit_date DATETIME
@@ -36,11 +36,71 @@ DROP TABLE IF EXISTS stores_table;
 CREATE TABLE stores_table (
   id INT AUTO_INCREMENT PRIMARY KEY,
   game_id INT NOT NULL,
-  store VARCHAR(100),
+  store_id INT,
   inclusion_date DATETIME,
   edit_date DATETIME,
   FOREIGN KEY (game_id) REFERENCES games_table(id) ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS place_stores_table;
+CREATE TABLE place_stores_table (
+  id INT AUTO_INCREMENT PRIMARY KEY, 
+  store VARCHAR(100),
+  lat VARCHAR(100),
+  lon VARCHAR(100),
+  inclusion_date DATETIME,
+  edit_date DATETIME
+);
+
+DROP TABLE IF EXISTS shop_cart;
+CREATE TABLE shop_cart (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  game_id INT NOT NULL, 
+  inclusion_date DATETIME,
+  edit_date DATETIME,
+  FOREIGN KEY (game_id) REFERENCES games_table(id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS check_out;
+CREATE TABLE check_out (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    family_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    address_complement VARCHAR(255),
+    country VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    cep VARCHAR(10) NOT NULL,
+    type_payment_credit VARCHAR(50),
+    type_payment_debit VARCHAR(50),
+    type_payment_paypal VARCHAR(50),
+    card_name VARCHAR(255),
+    card_number VARCHAR(16),
+    card_date_expiration VARCHAR(7),
+    card_cvv VARCHAR(4),
+    code VARCHAR(255),
+    inclusion_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    edit_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+ 
+DROP TABLE IF EXISTS checkout_shop_itens;
+CREATE TABLE checkout_shop_itens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  game_id INT NOT NULL, 
+  check_out_id INT NOT NULL, 
+  inclusion_date DATETIME,
+  edit_date DATETIME,
+  FOREIGN KEY (game_id) REFERENCES games_table(id) ON DELETE CASCADE,
+  FOREIGN KEY (check_out_id) REFERENCES check_out(id) ON DELETE CASCADE
+);
+
+
+INSERT INTO place_stores_table (store, lat, lon, inclusion_date, edit_date) 
+	VALUES ('Loja Tamboré', '-23.504245112921097', '-46.83435060312886', Now(), Now()),
+		   ('Loja União', '-23.541282861784126', '-46.76638890860699', Now(), Now()),
+		   ('Loja Iguatemi', '-23.504386186165057', '-46.84833905906179', Now(), Now());
 
 INSERT INTO games_table (game_name, game_description, game_price, inclusion_date, edit_date) 
 VALUES ('Overwatch', 'Overwatch é um jogo de tiro em equipe que conta com um elenco diversificado de heróis poderosíssimos. Viaje pelo mundo, monte uma equipe e dispute objetivos em combates 6v6 de tirar o fôlego.', 
@@ -80,27 +140,27 @@ VALUES (1, 'PC', Now(), Now()),
        (8, 'XBox', Now(), Now()),
        (8, 'PC', Now(), Now()),
        (8, 'WiiU', Now(), Now());
-
-INSERT INTO stores_table  (game_id, store, inclusion_date, edit_date) 
-VALUES (1, 'Loja Tamboré', Now(), Now()),
-	   (1, 'Loja União', Now(), Now()),
-	   (2, 'Loja Tamboré', Now(), Now()),
-	   (2, 'Loja União', Now(), Now()),
-	   (2, 'Loja Iguatemi', Now(), Now()),
-	   (3, 'Loja Tamboré', Now(), Now()),
-	   (3, 'Loja União', Now(), Now()),
-	   (4, 'Loja Iguatemi', Now(), Now()), 
-	   (4, 'Loja União', Now(), Now()),
-	   (5, 'Loja Iguatemi', Now(), Now()),
-	   (5, 'Loja Tamboré', Now(), Now()),
-	   (5, 'Loja União', Now(), Now()),
-	   (6, 'Loja Iguatemi', Now(), Now()), 
-	   (6, 'Loja União', Now(), Now()),
-	   (7, 'Loja Tamboré', Now(), Now()),
-	   (7, 'Loja União', Now(), Now()),
-       (8, 'Loja Tamboré', Now(), Now()),
-	   (8, 'Loja União', Now(), Now()),
-	   (8, 'Loja Iguatemi', Now(), Now());
+ 
+INSERT INTO stores_table  (game_id, store_id, inclusion_date, edit_date) 
+VALUES (1, 1, Now(), Now()),
+	   (1, 2, Now(), Now()),
+	   (2, 1, Now(), Now()),
+	   (2, 2, Now(), Now()),
+	   (2, 3, Now(), Now()),
+	   (3, 1, Now(), Now()),
+	   (3, 2, Now(), Now()),
+	   (4, 3, Now(), Now()), 
+	   (4, 2, Now(), Now()),
+	   (5, 1, Now(), Now()),
+	   (5, 3, Now(), Now()),
+	   (5, 2, Now(), Now()),
+	   (6, 3, Now(), Now()), 
+	   (6, 2, Now(), Now()),
+	   (7, 1, Now(), Now()),
+	   (7, 2, Now(), Now()),
+       (8, 1, Now(), Now()),
+	   (8, 2, Now(), Now()),
+	   (8, 3, Now(), Now());
  
  /*
 SELECT * FROM games_table AS j 
@@ -110,7 +170,16 @@ SELECT * FROM games_table AS j
 
 SELECT * FROM games_table;
 SELECT * FROM images_table;
-SELECT * FROM platforms_table;
+SELECT id, game_id, platform, inclusion_date, edit_date FROM platforms_table;
+SELECT id, game_id, store, inclusion_date, edit_date FROM stores_table;
+
+
+SELECT s.id, game_id, store, lat, lon, s.inclusion_date, s.edit_date FROM stores_table AS s INNER JOIN place_stores_table AS p ON p.id = s.store_id WHERE game_id = 1;
+
+SELECT s.id, game_id, store, s.inclusion_date, s.edit_date FROM stores_table AS s INNER JOIN place_stores_table AS p ON p.id = s.store_id;
+
+SELECT * FROM place_stores_table;
 SELECT * FROM stores_table;
 
 */
+ 

@@ -5,9 +5,9 @@
 
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
     <div class="col-md-5 p-lg-5 mx-auto my-5">
-        <h1 class="display-4 font-weight-normal">Título legal</h1>
-        <p class="lead font-weight-normal">E uma descrição engraçadinha, para continuar. Alavanque seus esforços em marketing com esse exemplo, baseado nas páginas de marketing da Apple.</p>
-        <a class="btn btn-outline-secondary" href="#">Em breve</a>
+        <h1 class="display-4 font-weight-normal" style="color: #0d051a">Boas vindas à <br />Smart Games!</h1>
+        <p class="lead font-weight-normal">Explore um universo de diversão e entretenimento na Smart Games, sua loja online especializada em jogos incríveis. Oferecemos uma ampla seleção dos títulos mais emocionantes para todas as plataformas, desde os clássicos atemporais até os lançamentos mais aguardados.</p>
+        <a class="btn btn-outline-white" href="#jogos" style="border-color: #0d051a; color:#0d051a;">Conheça nossos jogos</a>
     </div>
     <div class="product-device shadow-sm d-none d-md-block"></div>
     <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
@@ -19,23 +19,25 @@
 
             @foreach (var item in ViewBag.listAllGames)
             {
-                <div class="col mb-5">
+                <div class="col mb-5 col-md-4">
                     <div class="card h-100">
+
                         <!-- Product image-->
-                        <img class="card-img-top img-fluid" src="data:image/png;base64,@item.photo" alt="...">
+                        <a data-toggle="modal" data-target="#modalDetalhes@(item.id)">
+                            <img class="card-img-top img-fluid" src="@item.photo" alt="...">
+                        </a>
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">@item.game_name</h5>
+                                <h5 class="fw-bolder"><a data-toggle="modal" data-target="#modalDetalhes@(item.id)">@item.game_name</a></h5>
                                 <!-- Product price-->
-                                <p>@item.game_price.ToString("C", new CultureInfo("pt-BR"))</p>
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto" data-toggle="modal" data-target="#modalDetalhes@(item.id)">Ver mais</a>
+                                <p><a data-toggle="modal" data-target="#modalDetalhes@(item.id)">@item.game_price.ToString("C", new CultureInfo("pt-BR"))</a></p>
+                                <div class="text-center">
+                                    <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a;" data-toggle="modal" data-target="#modalDetalhes@(item.id)">Ver mais</a>
+                                    <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a;" asp-controller="Game" asp-action="ViewGame" asp-route-id="@item.id">Detalhes</a> <br />
+                                    <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a; margin-top: 2%" asp-controller="Cart" asp-action="AddCart" asp-route-id="@item.id">Adicionar ao carrinho</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,21 +47,92 @@
     </div>
 </section>
 
-@foreach (var item in ViewBag.listAllGames)
+@if (ViewBag.listAllGames != null)
 {
-    <!-- Modal exclusivo para cada jogo -->
-    <div class="modal fade" id="modalDetalhes@(item.id)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h5>Detalhes do Jogo: @item.game_name</h5>
-                    <p>Preço: @item.game_price.ToString("C", new CultureInfo("pt-BR"))</p>
-                    <!-- Adicione outros detalhes conforme necessário -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+    @if (ViewBag.listAllGames.Count != 0)
+    {
+        @foreach (var item in ViewBag.listAllGames)
+        {
+            <!-- Modal exclusivo para cada jogo -->
+            <div class="modal fade" id="modalDetalhes@(item.id)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="card h-60 text-center">
+                            <!-- Product image-->
+                            <img style="max-width: 60%; height: auto; margin-left: 20%;" src="@item.photo" alt="...">
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">@item.game_name</h5>
+                                    <!-- Product price-->
+                                    <p>@item.game_price.ToString("C", new CultureInfo("pt-BR"))</p>
+                                    <p class="small">@item.game_description</p>
+
+                                    <p class="small">
+                                        Plataformas:
+                                        @for (int i = 0; i < item.listPlatforms.Count; i++)
+                                        {
+                                            <span>
+                                                <strong>
+
+                                                    @item.listPlatforms[i].platform
+                                                </strong>
+                                            </span>
+                                            @if (i < item.listPlatforms.Count - 1)
+                                            {
+                                                <span>, </span>
+                                            }
+                                        }
+                                        @if (item.listPlatforms.Count > 0)
+                                        {
+                                            <span>.</span>
+                                        }
+                                    </p>
+
+                                    <p class="small">
+                                        Disponibilidade:
+                                        @for (int i = 0; i < item.listStores.Count; i++)
+                                        {
+                                            <span><strong>@item.listStores[i].store</strong></span>
+                                            @if (i < item.listStores.Count - 1)
+                                            {
+                                                <span>, </span>
+                                            }
+                                        }
+                                        @if (item.listStores.Count > 0)
+                                        {
+                                            <span>.</span>
+                                        }
+                                    </p>
+
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a;" data-toggle="modal" data-target="#modalDetalhes@(item.id)">Adicionar ao carrinho</a>
+                                        <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a;" asp-controller="Game" asp-action="ViewGame" asp-route-id="@item.id">Ver detalhes</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
+        }       }
+    else
+    {
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+              <h6>Não existem dados a serem exibidos</h6>
         </div>
+    }
+
+
+}
+else
+{
+    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+         <h6>Não existem dados a serem exibidos</h6>
     </div>
 }

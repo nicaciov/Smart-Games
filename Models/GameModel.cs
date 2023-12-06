@@ -12,6 +12,7 @@ namespace Smart_Games.Models
         public double game_price { get; set; }
         public string photo { get; set; }
 
+
         public DateTime inclusion_date { get; set;}
         public DateTime edit_date { get; set;}
 

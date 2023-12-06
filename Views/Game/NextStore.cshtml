@@ -1,0 +1,154 @@
+﻿@model GameModel
+@using System.Globalization
+@{
+    ViewData["Title"] = @Model.game_name;
+}
+<!-- Page Content -->
+<div class="container">
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMyhfLvmMtZmbJveSTOFRKEmAs7diaKfA&callback=inicializarMapa" async defer></script>
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">
+        @Model.game_name
+        <small>
+            (@for (int i = 0; i < @Model.listPlatforms.Count; i++)
+            {
+                @Model.listPlatforms[i].platform
+                @if (i < @Model.listPlatforms.Count - 1)
+                {
+                    <span>, </span>
+                }
+            })
+        </small>@Model.game_price.ToString("C", new CultureInfo("pt-BR"))
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-4">
+            <img class="img-fluid" src="@Model.photo" alt="">
+        </div>
+
+        <div class="col-md-8">
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <p>@Model.game_description</p>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <h5 class="my-3">Plataformas</h5>
+                    <ul>
+                        @for (int i = 0; i < @Model.listPlatforms.Count; i++)
+                        {
+                            <li>@Model.listPlatforms[i].platform </li>
+                        }
+                    </ul>
+
+                    <h5 class="my-3">Onde encontrar?</h5>
+                    <ul>
+                        @for (int i = 0; i < @Model.listStores.Count; i++)
+                        {
+                            <li>@Model.listStores[i].store</li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-8">
+
+                    <button onclick="getClientLocation()" class="btn btn-outline-white"
+                            style="border-color: #0d051a; color:#0d051a;">
+                        Encontrar loja
+                    </button>
+
+                    <a class="btn btn-outline-white" style="border-color: #0d051a; color:#0d051a;" asp-controller="Cart"
+                       asp-action="AddCart" asp-route-id="@Model.id">Adicionar ao carrinho</a>
+
+                    @if (@ViewBag.nextStore != null)
+                    {
+                        <h6 class="my-3"> Loja mais próxima: @ViewBag.nextStore.store</h6>
+                        <div id="mapa" style="height: 200px; width: 400px"></div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <script>
+            function getClientLocation() {
+                // Verifica se o navegador suporta a API de Geolocalização
+                if (navigator.geolocation) {
+                    // Solicita a localização do usuário
+                    navigator.geolocation.getCurrentPosition(
+                        function (position) {
+                            // Sucesso: position é um objeto contendo as informações da localização
+                            var latitude = position.coords.latitude;
+                            var longitude = position.coords.longitude;
+
+                            // Construa a URL do redirecionamento
+                            var url = '@Url.Action("NextStore", "Game")' + '?id=@Model.id&lat=' + encodeURIComponent(latitude) + '&lon=' + encodeURIComponent(longitude);
+
+                            // Redirecione para a URL construída
+                            window.location.href = url;
+
+                        },
+                        function (error) {
+                            // Erro: exibe uma mensagem de erro
+                            alert("Permissão de localização necessária.");
+                        }
+                    );
+                } else {
+                    // O navegador não suporta a API de Geolocalização
+                    alert("Seu navegador não suporta a API de Geolocalização.");
+                }
+            }
+        </script>
+
+        @if (@ViewBag.nextStore != null)
+        {
+            <script>
+                function inicializarMapa() {
+                    var coordenadas = { lat: @ViewBag.nextStore.lat, lng: @ViewBag.nextStore.lon };
+
+                    var mapa = new google.maps.Map(document.getElementById('mapa'), {
+                        zoom: 15,
+                        center: coordenadas
+                    });
+
+                    var marcador = new google.maps.Marker({
+                        position: coordenadas,
+                        map: mapa,
+                        title: 'Localização'
+                    });
+                }
+
+                // Chame a função inicializarMapa assim que o script for carregado
+                inicializarMapa();
+            </script>
+        }
+
+        <!-- Related Projects Row -->
+        <h3 class="my-4">Confira outros títulos</h3>
+
+        <div class="row">
+            @foreach (var item in ((List<GameModel>)ViewBag.listAllGames).Take(4))
+            {
+                <div class="col-md-3 col-sm-6 mb-4 class=" text-center"">
+                    <a asp-controller="Game" asp-action="ViewGame" asp-route-id="@item.id">
+                        <img class="img-fluid" src="@item.photo" alt="">
+                    </a><a style="color:#0d051a;" class="text-center" asp-controller="Game" asp-action="ViewGame" asp-route-id="@item.id">
+                        @item.game_name
+                    </a>
+                </div>
+            }
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
