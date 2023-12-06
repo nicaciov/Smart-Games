@@ -181,5 +181,9 @@ SELECT s.id, game_id, store, s.inclusion_date, s.edit_date FROM stores_table AS 
 SELECT * FROM place_stores_table;
 SELECT * FROM stores_table;
 
+SELECT * FROM shop_cart;
+SELECT * FROM check_out;
+SELECT * FROM checkout_shop_itens; 
+
 */
  
